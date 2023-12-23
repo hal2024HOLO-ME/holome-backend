@@ -19,10 +19,12 @@ export class DiagnosisController {
 	async getDiagnosisResult(
 		@Body() diagnosisInput: DiagnosisInput,
 	): Promise<{ name: string; description: string; model_name: string }> {
-		const { character_type, character_name } = diagnosisInput;
+		const { character_type, character_name, user_id } = diagnosisInput;
+
 		const character = await this.diagnosisService.getDiagnosisResult(
 			character_type,
 			character_name,
+			user_id,
 		);
 
 		return character;

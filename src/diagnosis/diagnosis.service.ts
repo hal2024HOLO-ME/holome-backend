@@ -17,9 +17,11 @@ export class DiagnosisService {
 	async getDiagnosisResult(
 		character_type: string,
 		character_name: string,
+		user_id: string,
 	): Promise<{ name: string; description: string; model_name: string }> {
 		const character = await this.prismaService.characters.findFirst({
 			select: {
+				id: true,
 				name: true,
 				description: true,
 				model_name: true,
@@ -27,6 +29,21 @@ export class DiagnosisService {
 			where: {
 				type: Number(character_type),
 				name: character_name,
+			},
+		});
+
+		await this.prismaService.charactersUsers.create({
+			data: {
+				user: {
+					connect: {
+						id: user_id,
+					},
+				},
+				character: {
+					connect: {
+						id: character.id,
+					},
+				},
 			},
 		});
 

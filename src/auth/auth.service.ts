@@ -46,23 +46,44 @@ export class AuthService {
 		return null;
 	}
 
-	async signUp(signUpInput: SignUpInput): Promise<Users> {
+	async signUp(signUpInput: SignUpInput): Promise<string> {
 		const { login_id, password } = signUpInput;
 
 		const salt = await bcrypt.genSalt();
 		const hashPassword = await bcrypt.hash(password, salt);
 
-		return await this.prismaService.users.create({
+		const newUser = await this.prismaService.users.create({
 			data: {
 				id: uuidv7(),
 				login_id,
 				password: hashPassword,
 			},
 		});
+
+		return newUser.id;
 	}
 
 	// TODO: サインインの処理で何を返すか検討
 	async signIn(_user: PasswordOmitUsers): Promise<string> {
 		return 'access_token';
+	}
+
+	/**
+	 * ユーザーがパートナーを持っているかどうか判定
+	 * @param user_id
+	 * @returns
+	 */
+	async searchCharactersFromDB(user_id: string): Promise<boolean> {
+		let isCharacterExists = false;
+		const characters = await this.prismaService.charactersUsers.findFirst({
+			where: {
+				user_id,
+			},
+		});
+
+		// charactersが空の場合、isCharacterExistsをfalseにする
+		if (characters) isCharacterExists = true;
+
+		return isCharacterExists;
 	}
 }
