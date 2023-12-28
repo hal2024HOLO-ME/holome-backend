@@ -22,12 +22,12 @@ erDiagram
   
 
   "CharactersUsers" {
-    String character_name 
-    Int nostalgicLevel 
+    String character_name "❓"
+    Json character_data "❓"
     }
   
     "Users" o{--}o "CharactersUsers" : "characters_users"
     "Characters" o{--}o "CharactersUsers" : "characters_users"
-    "CharactersUsers" o|--|| "Users" : "user"
     "CharactersUsers" o|--|| "Characters" : "character"
+    "CharactersUsers" o|--|| "Users" : "user"
 ```

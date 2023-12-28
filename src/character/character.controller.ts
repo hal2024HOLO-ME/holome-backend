@@ -14,11 +14,20 @@ export class CharacterController {
 	async registerCharacterName(
 		@Body() characterRegisterInput: CharacterRegisterInput,
 	): Promise<void> {
-		const { user_id, character_id, character_name } = characterRegisterInput;
+		const {
+			user_id,
+			character_id,
+			character_name,
+			character_type,
+			character_file_name,
+		} = characterRegisterInput;
+
 		await this.characterService.registerCharacterName(
 			user_id,
 			character_id,
 			character_name,
+			character_type,
+			character_file_name,
 		);
 	}
 }

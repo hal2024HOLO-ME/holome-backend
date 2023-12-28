@@ -26,10 +26,14 @@ export class AuthController {
 	 */
 	@HttpCode(200)
 	@Post('signin')
-	async signIn(@Body() signInInput: SignInInput): Promise<string> {
+	async signIn(@Body() signInInput: SignInInput): Promise<object> {
 		const { login_id, password } = signInInput;
 
 		const user = await this.authService.validateUser(login_id, password);
+
+		const isCharacterExists = await this.authService.searchCharactersFromDB(
+			user.id,
+		);
 
 		/**
 		 * login_idまたはpasswordが間違っている場合の処理
@@ -45,7 +49,7 @@ export class AuthController {
 			);
 		}
 
-		return user.id;
+		return { id: user.id, isCharacterExists };
 	}
 
 	/**
@@ -55,7 +59,7 @@ export class AuthController {
 	 */
 	@HttpCode(200)
 	@Post('signup')
-	async signUp(@Body() signUpInput: SignUpInput): Promise<void> {
+	async signUp(@Body() signUpInput: SignUpInput): Promise<string> {
 		const user = await this.authService.getUser(signUpInput.login_id);
 		/**
 		 * login_idがすでに登録されている場合の処理
@@ -75,19 +79,19 @@ export class AuthController {
 				HttpStatus.BAD_REQUEST,
 			);
 
-		const newUser = await this.authService.signUp(signUpInput);
+		const user_id = await this.authService.signUp(signUpInput);
 
 		/**
 		 * ユーザー登録に失敗した場合の処理
 		 * @throws {paths["/api/v1/auth/signup"]["post"]["responses"]["500"]}
 		 */
-		if (!newUser)
+		if (!user_id)
 			throw new HttpException(
 				{
 					message: '会員登録に失敗しました',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
-		return;
+		return user_id;
 	}
 }

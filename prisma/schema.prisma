@@ -1,10 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator erd {
   provider = "prisma-erd-generator"
   output   = "./erd.md"
-  // TODO: FK表現できないか
 }
 
 generator client {
@@ -39,11 +35,10 @@ model Characters {
 model CharactersUsers {
   user_id        String     @db.Char(36)
   character_id   Int        @db.SmallInt
-  user           Users      @relation(fields: [user_id], references: [id])
+  character_name String?    @db.Char(20)
+  character_data Json?      @db.Json
   character      Characters @relation(fields: [character_id], references: [id])
-  character_name String     @db.Char(20)
-  // TODO: デフォルトのふれあい度をいれる
-  nostalgicLevel Int        @default(0)
+  user           Users      @relation(fields: [user_id], references: [id])
 
   @@id([user_id, character_id])
 }
