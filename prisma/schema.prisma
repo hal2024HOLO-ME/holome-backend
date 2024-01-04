@@ -36,7 +36,7 @@ model CharactersUsers {
   user_id        String     @db.Char(36)
   character_id   Int        @db.SmallInt
   character_name String?    @db.Char(20)
-  character_data Json?      @db.Json
+  characterData  String?    @db.Text
   character      Characters @relation(fields: [character_id], references: [id])
   user           Users      @relation(fields: [user_id], references: [id])
 
