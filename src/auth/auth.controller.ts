@@ -103,8 +103,7 @@ export class AuthController {
 	@HttpCode(200)
 	@Post('signout')
 	async signOut(@Body() signOutInput: SignOutInput): Promise<void> {
-		const { login_id, character_type, character_name, json_data } =
-			signOutInput;
+		const { login_id, character_name, json_data } = signOutInput;
 
 		// TODO: セッションなかったらの対応（優先度低い）
 		// const user = await this.authService.getUser(login_id);
