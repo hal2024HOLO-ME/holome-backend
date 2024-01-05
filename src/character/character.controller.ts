@@ -30,4 +30,16 @@ export class CharacterController {
 			character_file_name,
 		);
 	}
+
+	@HttpCode(200)
+	@Post('get-json')
+	async getCharacterJson(
+		@Body() user_id: { login_id: string },
+	): Promise<string> {
+		const { login_id } = user_id;
+		const character_data_json =
+			await this.characterService.getCharacterJson(login_id);
+
+		return character_data_json;
+	}
 }

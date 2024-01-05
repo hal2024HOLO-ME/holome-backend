@@ -86,4 +86,36 @@ export class AuthService {
 
 		return isCharacterExists;
 	}
+
+	/**
+	 * サインアウト処理時にキャラクターのデータを保存
+	 */
+	async signOut(
+		login_id: string,
+		character_file_name: string,
+		json_data: string,
+	): Promise<void> {
+		const character_data = await this.prismaService.characters.findFirst({
+			select: {
+				id: true,
+				name: true,
+				type: true,
+			},
+			where: {
+				model_name: character_file_name,
+			},
+		});
+
+		await this.prismaService.charactersUsers.update({
+			where: {
+				user_id_character_id: {
+					user_id: login_id,
+					character_id: Number(character_data.id),
+				},
+			},
+			data: {
+				characterData: json_data,
+			},
+		});
+	}
 }

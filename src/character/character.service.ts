@@ -40,4 +40,25 @@ export class CharacterService {
 			console.log('No record found with the provided user_id and character_id');
 		}
 	}
+
+	/**
+	 * user_idを元にキャラクターのJSONデータを取得
+	 * @param user_id
+	 * @returns
+	 */
+	async getCharacterJson(user_id: string): Promise<string> {
+		const character_data = await this.prismaService.charactersUsers.findFirst({
+			select: {
+				characterData: true,
+			},
+			where: {
+				user_id: user_id,
+			},
+		});
+
+		// NOTE: object型で返ってくるので、JSON形式の文字列に変換
+		const character_data_json = JSON.stringify(character_data);
+
+		return character_data_json;
+	}
 }

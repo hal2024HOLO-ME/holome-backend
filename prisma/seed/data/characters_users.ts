@@ -8,19 +8,31 @@ export const insertCharactersUsers = async () => {
 				user_id: '018b6fbd-72b5-7000-b31b-42e0a3825abf',
 				character_id: 5,
 				character_name: 'ちょこ',
-				character_data: {
+				// NOTE: Unity側がJSON文字列を受け取るため、JSON.stringify()で文字列化している。Unity側がClassなのでパスカルケースを変数名に用いてる
+				characterData: JSON.stringify({
 					nostalgic_level: 30,
 					color: {
-						eye: '1.000, 0.000, 0.000, 0.00',
-						ear: '1.000, 0.000, 0.000, 0.000',
-						body: '1.000, 0.000, 0.000, 0.000',
+						eye: {
+							r: 0.14901961386203767,
+							g: 0.5882353186607361,
+							b: 0.0,
+							a: 0.0,
+						},
+						ear: {
+							r: 0.8666667342185974,
+							g: 0.7764706611633301,
+							b: 0.5764706134796143,
+							a: 0.0,
+						},
+						body: {
+							r: 0.8666667342185974,
+							g: 0.7764706611633301,
+							b: 0.5764706134796143,
+							a: 0.0,
+						},
 					},
-					customize: {
-						neck: 'bell',
-						head: 'hat',
-						face: 'glasses',
-					},
-				},
+					customize: { neck: 'ribon', head: 'tiara', face: 'sanGlasses' },
+				}),
 			},
 		],
 	});

@@ -10,6 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { SignInInput } from './dto/signin.input';
 import { SignUpInput } from './dto/signup.input';
+import { SignOutInput } from './dto/signout.input';
 
 @Controller('auth')
 export class AuthController {
@@ -93,5 +94,39 @@ export class AuthController {
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
 		return user_id;
+	}
+
+	/**
+	 * サインアップ
+	 * @param signOutInput
+	 */
+	@HttpCode(200)
+	@Post('signout')
+	async signOut(@Body() signOutInput: SignOutInput): Promise<void> {
+		const { login_id, character_name, json_data } = signOutInput;
+
+		// TODO: セッションなかったらの対応（優先度低い）
+		// const user = await this.authService.getUser(login_id);
+
+		// console.log(user);
+		/**
+		 * login_idが登録されていない場合の処理
+		 * @throws {paths["/api/v1/auth/signout"]["post"]["responses"]["400"]}
+		 */
+		// if (!user)
+		// 	throw new HttpException(
+		// 		{
+		// 			type: 'validation',
+		// 			message: [
+		// 				{
+		// 					property: 'login_id',
+		// 					message: 'このユーザーIDは登録されていません',
+		// 				},
+		// 			],
+		// 		},
+		// 		HttpStatus.BAD_REQUEST,
+		// 	);
+
+		await this.authService.signOut(login_id, character_name, json_data);
 	}
 }

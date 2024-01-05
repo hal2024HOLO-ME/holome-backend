@@ -23,7 +23,7 @@ erDiagram
 
   "CharactersUsers" {
     String character_name "❓"
-    Json character_data "❓"
+    String characterData "❓"
     }
   
     "Users" o{--}o "CharactersUsers" : "characters_users"
